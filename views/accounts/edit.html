@@ -3,12 +3,22 @@
 {% block content %}
     {% parent %}
     <h1>Edit account</h1>
-    <form action="/account/{{ account.name }}" method="DELETE">
-        <button>Delete Account</button>
-    </form>
+    <button>Delete Account</button>
 {% endblock %}
 
 {% block js-bottom %}
     {% parent %}
-    <script href="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script>
+        $('button').on('click', function(){
+            $.ajax({
+                url: '/account/{{ account.name }}',
+                method: 'DELETE'
+            }).done(function(data){
+                if(data.result){
+                    document.location = '/account/';
+                }
+            });
+        });
+    </script>
 {% endblock %}
