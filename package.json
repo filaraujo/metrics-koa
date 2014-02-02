@@ -9,14 +9,17 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "co-monk": "0.0.1",
     "co-views": "~0.1.0",
     "grunt": "~0.4.2",
     "grunt-phantomas": "~0.5.1",
     "koa": "~0.1.2",
-    "koa-error": "~1.1.0",
+    "koa-error": "~1.1.1",
     "koa-router": "~2.4.4",
+    "monk": "~0.7.1",
     "swig": "~1.2.2",
     "thunkify": "0.0.1",
-    "co-monk": "0.0.1"
+    "co-body": "0.0.1",
+    "koa-static": "~1.4.2"
   }
 }

@@ -7,7 +7,7 @@ api.index = function *(next) {
     this.body = { route: 'account-index' };
 };
 
-// POST /app
+// GET /app/new
 api.new = function *(next) {
     yield next;
     this.body = { route: 'app-new' };

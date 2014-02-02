@@ -1,0 +1,14 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+    {% parent %}
+    <h1>Edit account</h1>
+    <form action="/account/{{ account.name }}" method="DELETE">
+        <button>Delete Account</button>
+    </form>
+{% endblock %}
+
+{% block js-bottom %}
+    {% parent %}
+    <script href="/vendor/jquery/jquery.min.js"></script>
+{% endblock %}

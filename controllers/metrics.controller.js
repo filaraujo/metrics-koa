@@ -8,7 +8,7 @@ api.index = function *(next) {
     this.body = { route: 'metrics-index' };
 };
 
-// POST /metric
+// GET /metric
 api.new = function *(next) {
     yield next;
     metricsHelper.run();
