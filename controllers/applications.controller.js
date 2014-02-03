@@ -1,22 +1,36 @@
+var render = require('../lib/render');
+var accounts = require('../lib/db').accounts;
+var parse = require('co-body');
+
 var api = {};
 
 
 // GET /app
 api.index = function *(next) {
     yield next;
-    this.body = { route: 'account-index' };
+    this.body = { route: 'app-index' };
 };
 
 // GET /app/new
 api.new = function *(next) {
-    yield next;
-    this.body = { route: 'app-new' };
+    var account = this.params.account;
+    this.account = yield accounts.findOne({ name: account });
+    this.body = yield render('applications/new', { account: this.account });
 };
 
 // POST /app
 api.create = function *(next) {
-    yield next;
-    this.body = { route: 'app-create' };
+    var parsed = yield parse(this);
+    var account = this.params.account;
+    var application = parsed.application;
+
+    this.account = yield accounts.findAndModify({ name: account }, { $push: { applications: 'this' } });
+    // yield accounts.insert({
+    //     name: account,
+    //     created: Date.now()
+    // });
+    // this.redirect('/account/' + account);
+    this.body = { route: 'app-create', account: this.account, application: application };
 };
 
 // GET /app/:app

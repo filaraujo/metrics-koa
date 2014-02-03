@@ -7,11 +7,7 @@ var api = {};
 // GET /account
 api.index = function * (next) {
     this.accounts = yield accounts.find({});
-
-    this.body = {
-        route: 'account-index',
-        accounts: this.accounts
-    };
+    this.body = yield render('accounts/index', { accounts: this.accounts });
 };
 
 // GET /account
@@ -27,7 +23,8 @@ api.create = function * (next) {
 
     yield accounts.insert({
         name: account,
-        created: Date.now()
+        created: Date.now(),
+        applications: []
     });
     this.redirect('/account/' + account);
 };

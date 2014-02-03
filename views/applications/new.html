@@ -1,0 +1,11 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+    {% parent %}
+    <h1>Create Application</h1>
+    <h2>{{ account.name }}</h2>
+    <form action="/account/{{account.name}}/app" method="POST">
+        <input name="application" placeholder="Application Name" type="text">
+        <button>Create Application</button>
+    </form>
+{% endblock %}
