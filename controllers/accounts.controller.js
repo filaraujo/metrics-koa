@@ -40,7 +40,7 @@ api.show = function * (next) {
     }
 
     this.account.route = 'account-show';
-    this.body = this.account;
+    this.body = yield render('accounts/show', { account: this.account });
 };
 
 // GET /account/:account/edit
@@ -68,8 +68,9 @@ api.update = function * (next) {
 
 // DELETE /account/:account
 api.destroy = function * (next) {
-    this.account = this.params.account;
-    var result = yield accounts.remove({ name: this.account });
+    var account = this.params.account;
+    var result = yield accounts.remove({ name: account });
+
     this.body = {
         route: 'account-destroy',
         account: this.account,

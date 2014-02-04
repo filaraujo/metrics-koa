@@ -1,0 +1,12 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+    {% parent %}
+    <h1>Account Details</h1>
+    <h2>{{ account.name }}</h2>
+    {% for application in account.applications %}
+        <div>
+            <a href="/account/{{ account.name }}/app/{{ application.name }}">{{ application.name }}</a>
+        </div>
+    {% endfor %}
+{% endblock %}

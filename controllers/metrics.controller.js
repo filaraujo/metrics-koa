@@ -25,7 +25,7 @@ api.create = function *(next) {
 api.show = function *(next) {
     this.app = this.params.app;
     this.account = this.params.account;
-    this.metric = this.params.metric
+    this.metric = this.params.metric;
     yield next;
     this.body = { route: 'metrics-show', app: this.app, account: this.account, metric: this.metric };
 };
