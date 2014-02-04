@@ -1,22 +1,34 @@
 var render = require('../lib/render');
 var accounts = require('../lib/db').accounts;
 var parse = require('co-body');
+var accountHelper = require('../helpers/accounts.helper');
 
 var api = {};
 
-// GET /account
+/**
+ * [index description]
+ * @type {[type]}
+ */
 api.index = function * (next) {
-    this.accounts = yield accounts.find({});
-    this.body = yield render('accounts/index', { accounts: this.accounts });
+    yield next;
+    this.body = yield render('accounts/index', {
+        accounts: this.accounts
+    });
 };
 
-// GET /account
+/**
+ * [new description]
+ * @type {[type]}
+ */
 api.new = function * (next) {
     yield next;
     this.body = yield render('accounts/new', {});
 };
 
-// POST /account
+/**
+ * [create description]
+ * @type {[type]}
+ */
 api.create = function * (next) {
     var parsed = yield parse(this);
     var account = parsed.account;
@@ -29,34 +41,41 @@ api.create = function * (next) {
     this.redirect('/account/' + account);
 };
 
-// GET /account/:account
+/**
+ * [show description]
+ * @type {[type]}
+ */
 api.show = function * (next) {
-    var account = this.params.account;
-    this.account = yield accounts.findOne({ name: account });
-
-    if(!this.account){
+    if (!this.account) {
         this.redirect('/account');
         return;
     }
 
     this.account.route = 'account-show';
-    this.body = yield render('accounts/show', { account: this.account });
+    this.body = yield render('accounts/show', {
+        account: this.account
+    });
 };
 
-// GET /account/:account/edit
+/**
+ * [edit description]
+ * @type {[type]}
+ */
 api.edit = function * (next) {
-    var account = this.params.account;
-    this.account = yield accounts.findOne({ name: account });
-
-    if(!this.account){ // @TODO if not owner logic
+    if (!this.account) { // @TODO if not owner logic
         this.redirect('/account');
         return;
     }
 
-    this.body = yield render('accounts/edit', { account: this.account });
+    this.body = yield render('accounts/edit', {
+        account: this.account
+    });
 };
 
-// PUT /account/:account
+/**
+ * [update description]
+ * @type {[type]}
+ */
 api.update = function * (next) {
     this.account = this.params.account;
     yield next;
@@ -66,10 +85,15 @@ api.update = function * (next) {
     };
 };
 
-// DELETE /account/:account
+/**
+ * [destroy description]
+ * @type {[type]}
+ */
 api.destroy = function * (next) {
     var account = this.params.account;
-    var result = yield accounts.remove({ name: account });
+    var result = yield accounts.remove({
+        name: account
+    });
 
     this.body = {
         route: 'account-destroy',
@@ -78,4 +102,26 @@ api.destroy = function * (next) {
     };
 };
 
-module.exports = api;
+
+/**
+ * exports account controller mapping
+ *
+ * index    GET     /account
+ * new      GET     /account/new
+ * create   POST    /account
+ * show     GET     /account/:account
+ * edit     GET     /account/:account/edit
+ * update   PUT     /account/:account
+ * destroy  DELETE  /account/:account
+ *
+ * @type {Object}
+ */
+module.exports = {
+    index: [accountHelper.getAll, api.index],
+    new: api.new,
+    create: api.create,
+    show: [accountHelper.get, api.show],
+    edit: [accountHelper.get, api.edit],
+    update: api.update,
+    destroy: api.destroy
+};

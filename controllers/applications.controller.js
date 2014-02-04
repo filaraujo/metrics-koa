@@ -1,11 +1,14 @@
 var render = require('../lib/render');
 var accounts = require('../lib/db').accounts;
 var parse = require('co-body');
+var accountHelper = require('../helpers/accounts.helper');
 
 var api = {};
 
-
-// GET /app
+/**
+ * [index description]
+ * @type {[type]}
+ */
 api.index = function * (next) {
     yield next;
     this.body = {
@@ -13,18 +16,21 @@ api.index = function * (next) {
     };
 };
 
-// GET /app/new
+/**
+ * [new description]
+ * @type {[type]}
+ */
 api.new = function * (next) {
-    var account = this.params.account;
-    this.account = yield accounts.findOne({
-        name: account
-    });
+    yield next;
     this.body = yield render('applications/new', {
         account: this.account
     });
 };
 
-// POST /app
+/**
+ * [create description]
+ * @type {[type]}
+ */
 api.create = function * (next) {
     var parsed = yield parse(this);
     var account = this.params.account;
@@ -44,7 +50,10 @@ api.create = function * (next) {
     this.redirect('/account/' + account + '/app/' + application);
 };
 
-// GET /app/:app
+/**
+ * [show description]
+ * @type {[type]}
+ */
 api.show = function * (next) {
     var app = this.params.app;
     var account = this.params.account;
@@ -62,7 +71,10 @@ api.show = function * (next) {
     // this.body = yield render('applications/show', { account: this.account });
 };
 
-// GET /app/:app/edit
+/**
+ * [edit description]
+ * @type {[type]}
+ */
 api.edit = function * (next) {
     yield next;
     this.body = {
@@ -71,7 +83,10 @@ api.edit = function * (next) {
     };
 };
 
-// PUT /app/:app
+/**
+ * [update description]
+ * @type {[type]}
+ */
 api.update = function * (next) {
     yield next;
     this.body = {
@@ -80,7 +95,10 @@ api.update = function * (next) {
     };
 };
 
-// DELETE /app/:app
+/**
+ * [destroy description]
+ * @type {[type]}
+ */
 api.destroy = function * (next) {
     yield next;
     this.body = {
@@ -89,4 +107,25 @@ api.destroy = function * (next) {
     };
 };
 
-module.exports = api;
+/**
+ * exports applications controller mapping
+ *
+ * index    GET     /app/:app
+ * new      GET     /app/new
+ * create   POST    /app
+ * show     GET     /app/:app
+ * edit     GET     /app/:app/edit
+ * update   PUT     /app/:app
+ * destroy  DELETE  /app/:app
+ *
+ * @type {Object}
+ */
+module.exports = {
+    index: api.index,
+    new: [accountHelper.get, api.new],
+    create: api.create,
+    show: api.show,
+    edit: api.edit,
+    update: api.update,
+    destroy: api.destroy
+};
