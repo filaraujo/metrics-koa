@@ -1,7 +1,7 @@
 var render = require('../lib/render');
 var accounts = require('../lib/db').accounts;
 var parse = require('co-body');
-var accountHelper = require('../helpers/accounts.helper');
+var accountModel = require('../models/accounts.model');
 
 var api = {};
 
@@ -122,7 +122,7 @@ api.destroy = function * (next) {
  */
 module.exports = {
     index: api.index,
-    new: [accountHelper.get, api.new],
+    new: [accountModel.get, api.new],
     create: api.create,
     show: api.show,
     edit: api.edit,
