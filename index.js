@@ -4,21 +4,19 @@ var app = require('koa')(),
     error = require('koa-error'),
     static = require('koa-static');
 
-// app.use(router);
+var accounts = new Resource('account', require('./app/controllers/accounts.controller'));
+var applications = new Resource('app', require('./app/controllers/applications.controller'));
+var metrics = new Resource('metric', require('./app/controllers/metrics.controller'));
+
+accounts.add(applications);
+applications.add(metrics);
+
 app.use(static('public'));
 app.use(error({
     template: './app/views/error.html'
 }));
-
-var account = new Resource('account', require('./app/controllers/accounts.controller'));
-var application = new Resource('app', require('./app/controllers/applications.controller'));
-// var metrics = app.resource('metric', require('./controllers/metrics.controller'));
-
-account.add(application);
-// application.add(metrics);
-
-
-app.use(account.middleware());
-app.use(application.middleware());
+app.use(accounts.middleware());
+app.use(applications.middleware());
+app.use(metrics.middleware());
 
 app.listen(3000);

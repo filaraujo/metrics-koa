@@ -12,7 +12,6 @@ api.create = function * (next) {
             }
         }
     });
-
     yield next;
 };
 
@@ -21,7 +20,6 @@ api.get = function * (next) {
         'applications.name': this.applicationName,
         name: this.accountName
     }, ['applications.$', 'name']);
-
     yield next;
 };
 

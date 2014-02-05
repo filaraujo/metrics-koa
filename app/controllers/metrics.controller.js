@@ -2,26 +2,38 @@ var metricsHelper = require('../helpers/metrics.helper');
 var api = {};
 
 
-// GET /metric
+/**
+ * [index description]
+ * @type {[type]}
+ */
 api.index = function *(next) {
     yield next;
     this.body = { route: 'metrics-index' };
 };
 
-// GET /metric
+/**
+ * [new description]
+ * @type {[type]}
+ */
 api.new = function *(next) {
     yield next;
     metricsHelper.run();
     this.body = { route: 'metrics-new' };
 };
 
-// POST /metric
+/**
+ * [create description]
+ * @type {[type]}
+ */
 api.create = function *(next) {
     yield next;
     this.body = { route: 'metrics-create' };
 };
 
-// GET /metric/:metric
+/**
+ * [show description]
+ * @type {[type]}
+ */
 api.show = function *(next) {
     this.app = this.params.app;
     this.account = this.params.account;
@@ -30,22 +42,52 @@ api.show = function *(next) {
     this.body = { route: 'metrics-show', app: this.app, account: this.account, metric: this.metric };
 };
 
-// GET /metric/:metric/edit
+/**
+ * [edit description]
+ * @type {[type]}
+ */
 api.edit = function *(next) {
     yield next;
     this.body = { route: 'metrics-edit', metric: this.params.metric };
 };
 
-// PUT /metric/:metric
+/**
+ * [update description]
+ * @type {[type]}
+ */
 api.update = function *(next) {
     yield next;
     this.body = { route: 'metrics-update', metric: this.params.metric };
 };
 
-// DELETE /metric/:metric
+/**
+ * [destroy description]
+ * @type {[type]}
+ */
 api.destroy = function *(next) {
     yield next;
     this.body = { route: 'metrics-destroy', metric: this.params.metric };
 };
 
-module.exports = api;
+/**
+ * exports metrics controller mapping
+ *
+ * index    GET     /metrics/:metric
+ * new      GET     /metrics/new
+ * create   POST    /metrics
+ * show     GET     /metrics/:metric
+ * edit     GET     /metrics/:metric/edit
+ * update   PUT     /metrics/:metric
+ * destroy  DELETE  /metrics/:metric
+ *
+ * @type {Object}
+ */
+module.exports = {
+    index: api.index,
+    new: api.new,
+    create: api.create,
+    show: api.show,
+    edit: api.edit,
+    update: api.update,
+    destroy: api.destroy
+};
