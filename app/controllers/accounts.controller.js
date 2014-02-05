@@ -1,7 +1,6 @@
-var render = require('../lib/render');
-var accounts = require('../lib/db').accounts;
+var render = require('../../lib/render');
 var parse = require('co-body');
-var accountModel = require('../models/accounts.model');
+var accountModel = require('../../app/models/accounts.model');
 
 var api = {};
 
@@ -31,14 +30,11 @@ api.new = function * (next) {
  */
 api.create = function * (next) {
     var parsed = yield parse(this);
-    var account = parsed.account;
+    this.account = parsed.account;
 
-    yield accounts.insert({
-        name: account,
-        created: Date.now(),
-        applications: []
-    });
-    this.redirect('/account/' + account);
+    yield next;
+
+    this.redirect('/account/' + this.account);
 };
 
 /**
@@ -46,6 +42,8 @@ api.create = function * (next) {
  * @type {[type]}
  */
 api.show = function * (next) {
+    yield next;
+
     if (!this.account) {
         this.redirect('/account');
         return;
@@ -62,6 +60,8 @@ api.show = function * (next) {
  * @type {[type]}
  */
 api.edit = function * (next) {
+    yield next;
+
     if (!this.account) { // @TODO if not owner logic
         this.redirect('/account');
         return;
@@ -90,15 +90,13 @@ api.update = function * (next) {
  * @type {[type]}
  */
 api.destroy = function * (next) {
-    var account = this.params.account;
-    var result = yield accounts.remove({
-        name: account
-    });
+    this.account = this.params.account;
+
+    yield next;
 
     this.body = {
         route: 'account-destroy',
-        account: this.account,
-        result: result
+        account: this.account
     };
 };
 
@@ -119,9 +117,9 @@ api.destroy = function * (next) {
 module.exports = {
     index: [accountModel.getAll, api.index],
     new: api.new,
-    create: api.create,
-    show: [accountModel.get, api.show],
-    edit: [accountModel.get, api.edit],
+    create: [api.create, accountModel.add],
+    show: [api.show, accountModel.get],
+    edit: [api.edit, accountModel.get],
     update: api.update,
-    destroy: api.destroy
+    destroy: [api.destroy, accountModel.remove]
 };

@@ -7,11 +7,11 @@ var app = require('koa')(),
 // app.use(router);
 app.use(static('public'));
 app.use(error({
-    template: './views/error.html'
+    template: './app/views/error.html'
 }));
 
-var account = new Resource('account', require('./controllers/accounts.controller'));
-var application = new Resource('app', require('./controllers/applications.controller'));
+var account = new Resource('account', require('./app/controllers/accounts.controller'));
+var application = new Resource('app', require('./app/controllers/applications.controller'));
 // var metrics = app.resource('metric', require('./controllers/metrics.controller'));
 
 account.add(application);
@@ -20,12 +20,5 @@ account.add(application);
 
 app.use(account.middleware());
 app.use(application.middleware());
-
-// var accountController = require('./controllers/accounts.controller');
-// app.get('/account', accountController.index);
-// app.get('/account/new', accountController.new);
-// app.post('/account', accountController.create);
-// app.get('/account/:account', accountController.show);
-
 
 app.listen(3000);
