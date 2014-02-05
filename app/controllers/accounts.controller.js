@@ -30,11 +30,11 @@ api.new = function * (next) {
  */
 api.create = function * (next) {
     var parsed = yield parse(this);
-    this.account = parsed.account;
+    this.accountName = parsed.account;
 
     yield next;
 
-    this.redirect('/account/' + this.account);
+    this.redirect('/account/' + this.accountName);
 };
 
 /**
@@ -77,11 +77,11 @@ api.edit = function * (next) {
  * @type {[type]}
  */
 api.update = function * (next) {
-    this.account = this.params.account;
+    this.accountName = this.params.account;
     yield next;
     this.body = {
         route: 'account-update',
-        account: this.account
+        account: this.accountName
     };
 };
 
@@ -90,7 +90,7 @@ api.update = function * (next) {
  * @type {[type]}
  */
 api.destroy = function * (next) {
-    this.account = this.params.account;
+    this.accountName = this.params.account;
 
     yield next;
 
@@ -117,9 +117,9 @@ api.destroy = function * (next) {
 module.exports = {
     index: [accountModel.getAll, api.index],
     new: api.new,
-    create: [api.create, accountModel.add],
+    create: [api.create, accountModel.create],
     show: [api.show, accountModel.get],
     edit: [api.edit, accountModel.get],
     update: api.update,
-    destroy: [api.destroy, accountModel.remove]
+    destroy: [api.destroy, accountModel.destroy]
 };

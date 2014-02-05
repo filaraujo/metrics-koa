@@ -1,7 +1,7 @@
 var render = require('../../lib/render');
-var accounts = require('../../lib/db').accounts;
 var parse = require('co-body');
 var accountModel = require('../../app/models/accounts.model');
+var applicationModel = require('../../app/models/applications.model');
 
 var api = {};
 
@@ -33,21 +33,12 @@ api.new = function * (next) {
  */
 api.create = function * (next) {
     var parsed = yield parse(this);
-    var account = this.params.account;
-    var application = parsed.application;
+    this.accountName = this.params.account;
+    this.applicationName = parsed.application;
 
-    this.account = yield accounts.findAndModify({
-        name: account
-    }, {
-        $push: {
-            applications: {
-                name: application,
-                created: Date.now()
-            }
-        }
-    });
+    yield next;
 
-    this.redirect('/account/' + account + '/app/' + application);
+    this.redirect('/account/' + this.accountName + '/app/' + this.applicationName);
 };
 
 /**
@@ -55,17 +46,14 @@ api.create = function * (next) {
  * @type {[type]}
  */
 api.show = function * (next) {
-    var app = this.params.app;
-    var account = this.params.account;
+    this.applicationName = this.params.app;
+    this.accountName = this.params.account;
 
-    this.account = yield accounts.find({
-        'applications.name': app,
-        name: account
-    }, ['applications.$', 'name']);
+    yield next;
 
     this.body = {
         route: 'app-show',
-        app: app,
+        app: this.applicationName,
         account: this.account
     };
     // this.body = yield render('applications/show', { account: this.account });
@@ -123,8 +111,8 @@ api.destroy = function * (next) {
 module.exports = {
     index: api.index,
     new: [api.new, accountModel.get],
-    create: api.create,
-    show: api.show,
+    create: [api.create, accountModel.get, applicationModel.create],
+    show: [api.show, applicationModel.get],
     edit: api.edit,
     update: api.update,
     destroy: api.destroy

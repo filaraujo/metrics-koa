@@ -12,17 +12,17 @@ api.getAll = function * (next){
     yield next;
 };
 
-api.add = function * (next){
+api.create = function * (next){
     yield accounts.insert({
-        name: this.account,
+        name: this.accountName,
         created: Date.now(),
         applications: []
     });
 };
 
-api.remove = function * (next){
+api.destroy = function * (next){
     yield accounts.remove({
-        name: this.account
+        name: this.accountName
     });
 };
 
