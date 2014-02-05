@@ -1,7 +1,5 @@
 var render = require('../../lib/render');
 var parse = require('co-body');
-var accountModel = require('../../app/models/accounts.model');
-var applicationModel = require('../../app/models/applications.model');
 
 var api = {};
 
@@ -95,25 +93,5 @@ api.destroy = function * (next) {
     };
 };
 
-/**
- * exports applications controller mapping
- *
- * index    GET     /app/:app
- * new      GET     /app/new
- * create   POST    /app
- * show     GET     /app/:app
- * edit     GET     /app/:app/edit
- * update   PUT     /app/:app
- * destroy  DELETE  /app/:app
- *
- * @type {Object}
- */
-module.exports = {
-    index: api.index,
-    new: [api.new, accountModel.get],
-    create: [api.create, accountModel.get, applicationModel.create],
-    show: [api.show, applicationModel.get],
-    edit: api.edit,
-    update: api.update,
-    destroy: api.destroy
-};
+// exports api object
+module.exports = api;

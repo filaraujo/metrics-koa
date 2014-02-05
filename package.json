@@ -17,9 +17,11 @@
     "koa": "~0.1.2",
     "koa-error": "~1.1.1",
     "koa-static": "~1.4.2",
-    "koa-resource-router": "~0.2.0",
+    "koa-router": "~3.0.0",
     "monk": "~0.7.1",
+    "phantomas": "~0.12.1",
     "swig": "~1.2.2",
+    "co": "~3.0.2",
     "thunkify": "0.0.1"
   }
 }

@@ -1,6 +1,5 @@
 var render = require('../../lib/render');
 var parse = require('co-body');
-var accountModel = require('../../app/models/accounts.model');
 
 var api = {};
 
@@ -100,26 +99,5 @@ api.destroy = function * (next) {
     };
 };
 
-
-/**
- * exports account controller mapping
- *
- * index    GET     /account
- * new      GET     /account/new
- * create   POST    /account
- * show     GET     /account/:account
- * edit     GET     /account/:account/edit
- * update   PUT     /account/:account
- * destroy  DELETE  /account/:account
- *
- * @type {Object}
- */
-module.exports = {
-    index: [accountModel.getAll, api.index],
-    new: api.new,
-    create: [api.create, accountModel.create],
-    show: [api.show, accountModel.get],
-    edit: [api.edit, accountModel.get],
-    update: api.update,
-    destroy: [api.destroy, accountModel.destroy]
-};
+// exports api object
+module.exports = api;
