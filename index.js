@@ -11,4 +11,14 @@ app.use(error({
 }));
 
 
+
+/**
+ * @TODO - google like domain file validating ownership
+ * @TODO - live event updates
+ *
+ * @TODO - metrics db structure idea - nested timestamp/commit id
+ * { account: xxxx, metrics: {  timestamp: xxxxx, data: { ... } } }
+ *
+ */
+
 app.listen(3000);

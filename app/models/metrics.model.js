@@ -15,11 +15,29 @@ var doThis = co(function * () {
     var results = yield phantomas('http://example.com', {
         "analyze-css": true
     });
-    var db = yield metrics.insert({
-        timestamp: Date.now(),
-        metrics: results[0].metrics
+
+    var db = yield metrics.update({
+        account: 'test',
+        application: 'test'
+    }, {
+        $push: {
+            'metrics': {
+                timestamp: new Date(),
+                data: results[0].metrics
+            }
+        }
+    }, {
+        upsert: true
     });
-    console.log(db)
+
+    console.log(results)
+
+    var data = yield metrics.find({
+        account: 'test'
+    });
+    var obj = {};
+
+
 });
 
 api.create = function * (next) {
