@@ -1,5 +1,6 @@
 var co = require('co');
 var thunkify = require('thunkify');
+var _ = require('lodash');
 
 var metrics = require('../../lib/db').metrics;
 var phantomas = thunkify(require('phantomas'));
@@ -16,28 +17,17 @@ var doThis = co(function * () {
         "analyze-css": true
     });
 
+    results[0].metrics.timestamp = Date.now();
     var db = yield metrics.update({
         account: 'test',
         application: 'test'
     }, {
         $push: {
-            'metrics': {
-                timestamp: new Date(),
-                data: results[0].metrics
-            }
+            'metrics': results[0].metrics
         }
     }, {
         upsert: true
     });
-
-    console.log(results)
-
-    var data = yield metrics.find({
-        account: 'test'
-    });
-    var obj = {};
-
-
 });
 
 api.create = function * (next) {
@@ -46,4 +36,36 @@ api.create = function * (next) {
     doThis();
 };
 
+
+api.format = function * (next) {
+    if (!this.metrics.length) {
+        return;
+    }
+
+    var m = this.metrics[0],
+        data = m.metrics[0],
+        timestamps = _.pluck(m.metrics, 'timestamp').map(function(val) {
+            return new Date(val).getTime();
+        });
+
+    // console.log(m.metrics)
+    var obj = {};
+
+    _.forIn(data, function(value, key) {
+
+        obj[key] = _.pluck(m.metrics, key);
+
+        if (key === "timestamp") {
+            return;
+        }
+
+        var data = _.pluck(m.metrics, key);
+        obj[key] = [data, timestamps];
+
+    });
+
+    this.metrics = obj;
+
+    yield next;
+};
 module.exports = api;

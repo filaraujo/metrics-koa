@@ -7,9 +7,9 @@ var api = {};
  */
 api.index = function * (next) {
     yield next;
-    this.body = {
+    this.body = yield render('metrics/index', {
         metrics: this.metrics
-    };
+    });
 };
 
 /**

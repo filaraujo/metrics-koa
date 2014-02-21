@@ -1,0 +1,42 @@
+{% extends '../layout.html' %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="vendor/c3/c3.css">
+{% endblock %}
+
+{% block content %}
+    {% parent %}
+    <h1>Metrics Example</h1>
+    <section>
+        {% for metric in metrics %}
+            <div id="chart-{{ loop.key }}"></div>
+        {% endfor %}
+    </section>
+{% endblock %}
+
+{% block js-bottom %}
+    {% parent %}
+    <script>
+        var metrics = {% autoescape false %}{{ metrics|json }}{% endautoescape %};
+    </script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/d3/d3.min.js" charset="utf-8"></script>
+    <script src="vendor/c3/c3.min.js"></script>
+    <script>
+
+        for(metric in metrics){
+             c3.generate({
+                bindto: '#chart-'+metric,
+                data: {
+                    x: 'x',
+                    columns: [
+                        ['x'].concat(metrics[metric][1]),
+                        [metric].concat(metrics[metric][0])
+                    ]
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}
