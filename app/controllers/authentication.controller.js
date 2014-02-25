@@ -8,7 +8,7 @@ api.authenticate = function * (next) {
     this.req.query = this.query;
 
     yield passport.authenticate('local', {
-        successRedirect: '/account',
+        successRedirect: '/account/'+this.req.body.username,
         failureRedirect: '/login'
     });
 };

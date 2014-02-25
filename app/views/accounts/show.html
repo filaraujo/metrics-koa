@@ -4,6 +4,12 @@
     {% parent %}
     <h1>Account Details</h1>
     <h2>{{ account.name }}</h2>
+    <ul>
+        <li>id: {{ account._id.toString() }}</li>
+        <li>password: {{ account.password }}</li>
+        <li>created: {{ account.created }}</li>
+    </ul>
+    <h3>Applications</h3>
     {% for application in account.applications %}
         <div>
             <a href="/account/{{ account.name }}/app/{{ application.name }}">{{ application.name }}</a>

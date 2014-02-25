@@ -32,6 +32,7 @@ api.new = function * (next) {
 api.create = function * (next) {
     var parsed = yield parse(this);
     this.accountName = parsed.account;
+    this.password = parsed.password;
 
     yield next;
 

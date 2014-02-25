@@ -15,6 +15,7 @@ api.getAll = function * (next){
 api.create = function * (next){
     yield accounts.insert({
         name: this.accountName,
+        password: this.password,
         created: Date.now(),
         applications: []
     });
