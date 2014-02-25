@@ -1,6 +1,5 @@
 var render = require('../../lib/render');
 var parse = require('co-body');
-
 var api = {};
 
 /**
@@ -9,9 +8,12 @@ var api = {};
  */
 api.index = function * (next) {
     yield next;
-    this.body = yield render('accounts/index', {
-        accounts: this.accounts
-    });
+    this.body = {
+        request: this.req.isAuthenticated()
+    }
+    // this.body = yield render('accounts/index', {
+    //     accounts: this.accounts
+    // });
 };
 
 /**

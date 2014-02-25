@@ -23,6 +23,9 @@
     "swig": "~1.2.2",
     "co": "~3.0.2",
     "thunkify": "0.0.1",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "koa-passport": "~0.1.0",
+    "passport-local": "~0.1.6",
+    "koa-sess": "0.0.8"
   }
 }

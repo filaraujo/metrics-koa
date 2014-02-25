@@ -1,6 +1,5 @@
 var render = require('../../lib/render');
 var parse = require('co-body');
-
 var api = {};
 
 /**
