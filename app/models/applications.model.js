@@ -8,7 +8,8 @@ api.create = function * (next) {
         $push: {
             applications: {
                 name: this.applicationName,
-                created: Date.now()
+                created: Date.now(),
+                metrics: []
             }
         }
     });

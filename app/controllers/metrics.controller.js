@@ -6,7 +6,10 @@ var api = {};
  * @type {[type]}
  */
 api.index = function * (next) {
+    this.applicationName = this.params.app;
+    this.accountName = this.params.account;
     yield next;
+    // this.body = this.metrics;
     this.body = yield render('metrics/index', {
         metrics: this.metrics
     });
