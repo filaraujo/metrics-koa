@@ -1,3 +1,5 @@
+var accountModel = require('../models/accounts.model');
+var applicationModel = require('../models/applications.model');
 var parse = require('co-body');
 var api = {};
 
@@ -17,7 +19,7 @@ api.index = function * (next) {
  * @type {[type]}
  */
 api.new = function * (next) {
-    yield next;
+    yield accountModel.get;
     yield this.render('applications/new', {
         account: this.account
     });
@@ -32,7 +34,8 @@ api.create = function * (next) {
     this.accountName = this.params.account;
     this.applicationName = parsed.application;
 
-    yield next;
+    yield accountModel.get;
+    yield applicationModel.create;
 
     this.redirect('/account/' + this.accountName + '/app/' + this.applicationName);
 };
@@ -45,7 +48,7 @@ api.show = function * (next) {
     this.applicationName = this.params.app;
     this.accountName = this.params.account;
 
-    yield next;
+    yield applicationModel.get;
 
     this.body = {
         route: 'app-show',
@@ -60,11 +63,15 @@ api.show = function * (next) {
  * @type {[type]}
  */
 api.edit = function * (next) {
-    yield next;
-    this.body = {
-        route: 'app-edit',
-        metric: this.params.metric
-    };
+    this.applicationName = this.params.app;
+    this.accountName = this.params.account;
+
+    yield applicationModel.get;
+
+    yield this.render('applications/edit', {
+        app: this.applicationName,
+        account: this.account
+    });
 };
 
 /**
@@ -87,7 +94,7 @@ api.destroy = function * (next) {
     this.applicationName = this.params.app;
     this.accountName = this.params.account;
 
-    yield next;
+    yield applicationModel.destroy;
 
     if(this.error){
         this.throw(500);

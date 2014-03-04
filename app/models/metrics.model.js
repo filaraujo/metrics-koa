@@ -14,20 +14,43 @@ api.getAll = function * (next) {
         name: this.accountName
     }, ['applications.$.metrics']);
     this.metrics = format(metrics[0].applications[0].metrics);
-    yield next;
 };
 
-var doThis = co(function * () {
+// var doThis = co(function * () {
+//     var results = yield phantomas('http://wikipedia.com', {
+//         "analyze-css": true
+//     });
+
+//     console.log('metrics fetched');
+
+//     results[0].metrics.timestamp = Date.now();
+//     var db = yield accounts.update({
+//         "name": this.applicationName,
+//         "applications.name": this.accountName
+//     }, {
+//         $push: {
+//             'applications.$.metrics': results[0].metrics
+//         }
+//     }, {
+//         upsert: true
+//     });
+// });
+
+api.create = function * (next) {
     var results = yield phantomas('http://wikipedia.com', {
         "analyze-css": true
     });
 
     console.log('metrics fetched');
 
+    console.log(results[0].metrics);
+    console.log(this.applicationName);
+    console.log(this.accountName);
+
     results[0].metrics.timestamp = Date.now();
     var db = yield accounts.update({
-        "name": "stinkypaul",
-        "applications.name": "app"
+        "name": this.accountName,
+        "applications.name": this.applicationName
     }, {
         $push: {
             'applications.$.metrics': results[0].metrics
@@ -35,12 +58,6 @@ var doThis = co(function * () {
     }, {
         upsert: true
     });
-});
-
-api.create = function * (next) {
-    yield next;
-
-    doThis();
 };
 
 

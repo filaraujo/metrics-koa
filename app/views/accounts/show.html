@@ -13,30 +13,11 @@
     {% for application in account.applications %}
         <div>
             <a href="/account/{{ account.name }}/app/{{ application.name }}">{{ application.name }}</a>
-            <a href="/account/{{ account.name }}/app/{{ application.name }}" data-method="delete">delete</a>
+            <a href="/account/{{ account.name }}/app/{{ application.name }}/edit">edit</a>
+            <a href="/account/{{ account.name }}/app/{{ application.name }}/metrics/new">new metrics</a>
         </div>
     {% endfor %}
     <h3>Actions</h3>
     <a href="/account/{{ account.name }}/app/new">Create new application</a>
-{% endblock %}
-
-{% block js-bottom %}
-    <script src="/vendor/jquery/jquery.min.js"></script>
-    <script>
-        (function(){
-
-            $('body')
-                .on('click', '[data-method]', function(e){
-                    $.ajax({
-                            url: this.href,
-                            method: 'DELETE'
-                        })
-                        .done(function(data, textStatus, jqXHR){
-                            console.log(data,jqXHR.status);
-                        });
-                    return false;
-                })
-        }());
-
-    </script>
+    <a href="/account/{{ account.name }}/edit">Edit Account</a>
 {% endblock %}

@@ -13,15 +13,13 @@ api.create = function * (next) {
             }
         }
     });
-    yield next;
 };
 
 api.get = function * (next) {
-    this.account = yield accounts.find({
+    this.account = yield accounts.findOne({
         'applications.name': this.applicationName,
         name: this.accountName
     }, ['applications.$', 'name']);
-    yield next;
 };
 
 api.destroy = function * (next) {
@@ -36,7 +34,6 @@ api.destroy = function * (next) {
     });
 
     this.error = !destroyed;
-    yield next;
 };
 
 module.exports = api;

@@ -1,3 +1,5 @@
+var applicationModel = require('../models/applications.model');
+var metricsModel = require('../models/metrics.model');
 var api = {};
 
 /**
@@ -7,7 +9,10 @@ var api = {};
 api.index = function * (next) {
     this.applicationName = this.params.app;
     this.accountName = this.params.account;
-    yield next;
+
+    yield applicationModel.get;
+    yield metricsModel.getAll;
+
     // this.body = this.metrics;
     yield this.render('metrics/index', {
         metrics: this.metrics
@@ -19,7 +24,11 @@ api.index = function * (next) {
  * @type {[type]}
  */
 api.new = function * (next) {
-    yield next;
+    this.applicationName = this.params.app;
+    this.accountName = this.params.account;
+
+    yield metricsModel.create;
+
     this.body = {
         route: 'metrics-new',
         msg: 'metrics scheduled'

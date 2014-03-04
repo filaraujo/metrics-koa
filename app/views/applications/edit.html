@@ -2,8 +2,8 @@
 
 {% block content %}
     {% parent %}
-    <h1>Edit account</h1>
-    <button>Delete Account</button>
+    <h1>Edit Application</h1>
+    <button>Delete Application</button>
 {% endblock %}
 
 {% block js-bottom %}
@@ -12,12 +12,12 @@
     <script>
         $('button').on('click', function(){
             $.ajax({
-                url: '/account/{{ account.name }}',
+                url: '/account/{{ account.name }}/app/{{ app }}',
                 method: 'DELETE'
             }).done(function(data, status, jqXHR){
                 console.log(data, jqXHR.status);
                 if(jqXHR.status === 200){
-                    document.location = '/account/';
+                    document.location = '/account/{{ account.name }}/app';
                 }
             });
         });

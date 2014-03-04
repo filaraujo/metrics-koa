@@ -1,3 +1,4 @@
+var applicationModel = require('../models/authentication.model');
 var parse = require('co-body');
 var passport = require('koa-passport');
 var api = {};

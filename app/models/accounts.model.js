@@ -4,16 +4,14 @@ var api = {};
 api.get = function * (next){
     var account = this.params.account;
     this.account = yield accounts.findOne({ name: account });
-    yield next;
 };
 
 api.getAll = function * (next){
     this.accounts = yield accounts.find({});
-    yield next;
 };
 
 api.create = function * (next){
-    yield accounts.insert({
+    this.account = yield accounts.insert({
         name: this.accountName,
         password: this.password,
         created: Date.now(),

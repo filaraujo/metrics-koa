@@ -1,3 +1,4 @@
+var accountModel = require('../models/accounts.model');
 var parse = require('co-body');
 var api = {};
 
@@ -6,7 +7,7 @@ var api = {};
  * @type {[type]}
  */
 api.index = function * (next) {
-    yield next;
+    yield accountModel.getAll;
 
     yield this.render('accounts/index', {
         accounts: this.accounts
@@ -18,7 +19,7 @@ api.index = function * (next) {
  * @type {[type]}
  */
 api.new = function * (next) {
-    yield next;
+    // yield next;
     yield this.render('accounts/new', {});
 };
 
@@ -31,7 +32,8 @@ api.create = function * (next) {
     this.accountName = parsed.account;
     this.password = parsed.password;
 
-    yield next;
+    yield accountModel.create;
+    console.log(this.account);
 
     this.redirect('/account/' + this.accountName);
 };
@@ -41,7 +43,7 @@ api.create = function * (next) {
  * @type {[type]}
  */
 api.show = function * (next) {
-    yield next;
+    yield accountModel.get;
 
     if (!this.account) {
         this.redirect('/account');
@@ -59,7 +61,7 @@ api.show = function * (next) {
  * @type {[type]}
  */
 api.edit = function * (next) {
-    yield next;
+    yield accountModel.get;
 
     if (!this.account) { // @TODO if not owner logic
         this.redirect('/account');
@@ -91,7 +93,7 @@ api.update = function * (next) {
 api.destroy = function * (next) {
     this.accountName = this.params.account;
 
-    yield next;
+    yield accountModel.destroy;
 
     this.body = {
         route: 'account-destroy',

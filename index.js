@@ -10,18 +10,17 @@ var render = require('./lib/render');
 
 app.keys = ['your-session-secret'];
 
+app.use(static('public'));
 app.use(session());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(render);
-app.use(router.middleware());
-app.use(static('public'));
+app.use(router.public.middleware());
+app.use(router.authenticate);
+app.use(router.secure.middleware());
 app.use(error({
     template: './app/views/error.html'
 }));
-
-
-
 
 
 /**
