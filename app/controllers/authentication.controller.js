@@ -25,7 +25,7 @@ api.logout = function * (next) {
 
 api.requireAuth = function * (next) {
     if (this.req.isAuthenticated()) {
-        yield next
+        yield next;
     } else {
         this.redirect('/login')
     }

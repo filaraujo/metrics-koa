@@ -85,11 +85,16 @@ api.update = function * (next) {
  * @type {[type]}
  */
 api.destroy = function * (next) {
+    this.applicationName = this.params.app;
+    this.accountName = this.params.account;
+
     yield next;
-    this.body = {
-        route: 'app-destroy',
-        metric: this.params.metric
-    };
+
+    if(this.error){
+        this.throw(500);
+    }
+
+    this.body = {};
 };
 
 // exports api object

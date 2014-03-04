@@ -13,11 +13,11 @@
     {% for application in account.applications %}
         <div>
             <a href="/account/{{ account.name }}/app/{{ application.name }}">{{ application.name }}</a>
-            <a href="/account/{{ account.name }}/app/{{ application.name }}" data-method="delete">delete {{ application.name }}</a>
+            <a href="/account/{{ account.name }}/app/{{ application.name }}" data-method="delete">delete</a>
         </div>
     {% endfor %}
     <h3>Actions</h3>
-    <a href="/account/{{ account.name }}/app/new">Create new account</a>
+    <a href="/account/{{ account.name }}/app/new">Create new application</a>
 {% endblock %}
 
 {% block js-bottom %}
@@ -32,7 +32,7 @@
                             method: 'DELETE'
                         })
                         .done(function(data, textStatus, jqXHR){
-                            console.log(jqXHR.status);
+                            console.log(data,jqXHR.status);
                         });
                     return false;
                 })

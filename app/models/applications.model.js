@@ -24,4 +24,19 @@ api.get = function * (next) {
     yield next;
 };
 
+api.destroy = function * (next) {
+    var destroyed = yield accounts.update({
+        name: this.accountName
+    }, {
+        "$pull": {
+            "applications": {
+                "name": this.applicationName
+            }
+        }
+    });
+
+    this.error = !destroyed;
+    yield next;
+};
+
 module.exports = api;

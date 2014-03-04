@@ -14,21 +14,27 @@ function validate(username, password, done) {
     accounts.findOne({
         name: username,
         password: password
-    })(function(err, results) {
-        if (!results.length) {
-            done(null, user);
-        } else {
-            done(null, false);
+    })(function(err, user) {
+        if (err) {
+            return done(err);
         }
+        if (!user) {
+            return done(null, false);
+        }
+        return done(null, user);
     });
 }
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-    done(null, user);
+    accounts.findOne({
+        _id: id
+    })(function(err, user) {
+        done(err, user);
+    });
 });
 
 passport.use(new LocalStrategy(validate));
