@@ -1,4 +1,3 @@
-var render = require('../../lib/render');
 var parse = require('co-body');
 var api = {};
 
@@ -8,12 +7,10 @@ var api = {};
  */
 api.index = function * (next) {
     yield next;
-    this.body = {
-        request: this.req.isAuthenticated()
-    }
-    // this.body = yield render('accounts/index', {
-    //     accounts: this.accounts
-    // });
+
+    yield this.render('accounts/index', {
+        accounts: this.accounts
+    });
 };
 
 /**
@@ -22,7 +19,7 @@ api.index = function * (next) {
  */
 api.new = function * (next) {
     yield next;
-    this.body = yield render('accounts/new', {});
+    yield this.render('accounts/new', {});
 };
 
 /**
@@ -52,7 +49,7 @@ api.show = function * (next) {
     }
 
     this.account.route = 'account-show';
-    this.body = yield render('accounts/show', {
+    yield this.render('accounts/show', {
         account: this.account
     });
 };
@@ -69,7 +66,7 @@ api.edit = function * (next) {
         return;
     }
 
-    this.body = yield render('accounts/edit', {
+    yield this.render('accounts/edit', {
         account: this.account
     });
 };

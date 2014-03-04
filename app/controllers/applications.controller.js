@@ -1,4 +1,3 @@
-var render = require('../../lib/render');
 var parse = require('co-body');
 var api = {};
 
@@ -19,7 +18,7 @@ api.index = function * (next) {
  */
 api.new = function * (next) {
     yield next;
-    this.body = yield render('applications/new', {
+    yield this.render('applications/new', {
         account: this.account
     });
 };
@@ -53,7 +52,7 @@ api.show = function * (next) {
         app: this.applicationName,
         account: this.account
     };
-    // this.body = yield render('applications/show', { account: this.account });
+    // yield this.render('applications/show', { account: this.account });
 };
 
 /**

@@ -1,4 +1,3 @@
-var render = require('../../lib/render');
 var parse = require('co-body');
 var passport = require('koa-passport');
 var api = {};
@@ -14,7 +13,7 @@ api.authenticate = function * (next) {
 };
 
 api.login = function * (next) {
-    this.body = yield render('login', {});
+    yield this.render('login', {});
 };
 
 api.logout = function * (next) {
@@ -27,7 +26,7 @@ api.requireAuth = function * (next) {
     if (this.req.isAuthenticated()) {
         yield next;
     } else {
-        this.redirect('/login')
+        this.redirect('/login');
     }
 };
 

@@ -1,4 +1,3 @@
-var render = require('../../lib/render');
 var api = {};
 
 /**
@@ -10,7 +9,7 @@ api.index = function * (next) {
     this.accountName = this.params.account;
     yield next;
     // this.body = this.metrics;
-    this.body = yield render('metrics/index', {
+    yield this.render('metrics/index', {
         metrics: this.metrics
     });
 };

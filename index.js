@@ -2,15 +2,18 @@ var app = require('koa')(),
     error = require('koa-error'),
     passport = require('koa-passport'),
     session = require('koa-sess'),
-    static = require('koa-static');
+    static = require('koa-static'),
+    views = require('koa-views');
 
 var router = require('./lib/router');
+var render = require('./lib/render');
 
 app.keys = ['your-session-secret'];
 
 app.use(session());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(render);
 app.use(router.middleware());
 app.use(static('public'));
 app.use(error({
